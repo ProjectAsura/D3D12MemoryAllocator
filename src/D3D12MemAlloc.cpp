@@ -20,6 +20,9 @@
 // THE SOFTWARE.
 //
 
+#pragma warning(disable:4324)   // warning C4324: アラインメント指定子のために構造体がパッドされました
+#pragma warning(disable:4505)   // warning C4505: 内部リンケージ含む参照されていない関数が削除されました
+
 #include "D3D12MemAlloc.h"
 
 #include <combaseapi.h>
@@ -2967,7 +2970,7 @@ BlockMetadata::BlockMetadata(const ALLOCATION_CALLBACKS* allocationCallbacks, bo
     D3D12MA_ASSERT(allocationCallbacks);
 }
 
-void BlockMetadata::DebugLogAllocation(UINT64 offset, UINT64 size, void* privateData) const
+void BlockMetadata::DebugLogAllocation([[maybe_unused]] UINT64 offset, [[maybe_unused]] UINT64 size, void* privateData) const
 {
     if (IsVirtual())
     {
@@ -2979,7 +2982,7 @@ void BlockMetadata::DebugLogAllocation(UINT64 offset, UINT64 size, void* private
         Allocation* allocation = reinterpret_cast<Allocation*>(privateData);
 
         privateData = allocation->GetPrivateData();
-        LPCWSTR name = allocation->GetName();
+        [[maybe_unused]] LPCWSTR name = allocation->GetName();
 
         D3D12MA_DEBUG_LOG(L"UNFREED ALLOCATION; Offset: %llu; Size: %llu; PrivateData: %p; Name: %s",
             offset, size, privateData, name ? name : L"D3D12MA_Empty");
@@ -3359,7 +3362,7 @@ bool BlockMetadata_Linear::CreateAllocationRequest(
     UINT64 allocSize,
     UINT64 allocAlignment,
     bool upperAddress,
-    UINT32 strategy,
+    [[maybe_unused]] UINT32 strategy,
     AllocationRequest* pAllocationRequest)
 {
     D3D12MA_ASSERT(allocSize > 0 && "Cannot allocate empty block!");
@@ -3379,7 +3382,7 @@ bool BlockMetadata_Linear::CreateAllocationRequest(
 
 void BlockMetadata_Linear::Alloc(
     const AllocationRequest& request,
-    UINT64 allocSize,
+    [[maybe_unused]] UINT64 allocSize,
     void* privateData)
 {
     UINT64 offset = (UINT64)request.allocHandle - 1;
@@ -3551,14 +3554,14 @@ AllocHandle BlockMetadata_Linear::GetAllocationListBegin() const
     return (AllocHandle)0;
 }
 
-AllocHandle BlockMetadata_Linear::GetNextAllocation(AllocHandle prevAlloc) const
+AllocHandle BlockMetadata_Linear::GetNextAllocation([[maybe_unused]] AllocHandle prevAlloc) const
 {
     // Function only used for defragmentation, which is disabled for this algorithm
     D3D12MA_ASSERT(0);
     return (AllocHandle)0;
 }
 
-UINT64 BlockMetadata_Linear::GetNextFreeRegionSize(AllocHandle alloc) const
+UINT64 BlockMetadata_Linear::GetNextFreeRegionSize([[maybe_unused]] AllocHandle alloc) const
 {
     // Function only used for defragmentation, which is disabled for this algorithm
     D3D12MA_ASSERT(0);
@@ -4766,7 +4769,7 @@ bool BlockMetadata_TLSF::CreateAllocationRequest(
 
 void BlockMetadata_TLSF::Alloc(
     const AllocationRequest& request,
-    UINT64 allocSize,
+    [[maybe_unused]] UINT64 allocSize,
     void* privateData)
 {
     // Get block and pop it from the free list
@@ -9975,3 +9978,6 @@ VirtualBlock::~VirtualBlock()
 #endif // _D3D12MA_VIRTUAL_BLOCK_FUNCTIONS
 #endif // _D3D12MA_PUBLIC_INTERFACE
 } // namespace D3D12MA
+
+#pragma warning(default:4324)   // warning C4324: アラインメント指定子のために構造体がパッドされました
+#pragma warning(default:4505)   // warning C4505: 内部リンケージ含む参照されていない関数が削除されました
