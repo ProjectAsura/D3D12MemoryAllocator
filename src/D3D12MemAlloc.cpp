@@ -20,8 +20,10 @@
 // THE SOFTWARE.
 //
 
-#pragma warning(disable:4324)   // warning C4324: アラインメント指定子のために構造体がパッドされました
-#pragma warning(disable:4505)   // warning C4505: 内部リンケージ含む参照されていない関数が削除されました
+#pragma warning(disable:4324)   // warning C4324: アラインメント指定子のために構造体がパッドされました.
+#pragma warning(disable:4505)   // warning C4505: 内部リンケージ含む参照されていない関数が削除されました.
+#pragma warning(disable:4100)   // warning C4100: 参照されないパラメータ.
+#pragma warning(disable:4701)   // warning C4701: 初期化されていない可能性のあるローカル変数が使用されます.
 
 #include "D3D12MemAlloc.h"
 
