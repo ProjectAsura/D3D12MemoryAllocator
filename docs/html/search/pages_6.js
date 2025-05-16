@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['overlap_0',['Resource aliasing (overlap)',['../resource_aliasing.html',1,'index']]]
+  ['memory_20allocator_0',['D3D12 Memory Allocator',['../index.html',1,'']]],
+  ['memory_20pools_1',['Custom memory pools',['../custom_pools.html',1,'optimal_allocation']]]
 ];
